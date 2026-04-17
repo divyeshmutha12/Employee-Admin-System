@@ -1,4 +1,4 @@
-# Employee Admin System
+# Yo Employee Admin System
 
 A clean, beginner-friendly Employee Management System backend built with FastAPI, SQLite, and SQLAlchemy.
 
