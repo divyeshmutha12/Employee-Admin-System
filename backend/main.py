@@ -30,12 +30,15 @@ app.add_middleware(
 
 @app.get("/")
 def root():
+    """Health/welcome endpoint."""
     return {"message": "Welcome to the Employee Management System"}
 
 
+# ---------- CREATE ----------
 @app.post("/employees", response_model=EmployeeResponse)
 def add_employee(employee: EmployeeCreate, db: Session = Depends(get_db)):
-    # Create a new Employee row from request data.
+    """Add a new employee to the database."""
+    # Build a new row from the request body.
     new_employee = models.Employee(name=employee.name, role=employee.role)
     db.add(new_employee)
     db.commit()
@@ -43,14 +46,18 @@ def add_employee(employee: EmployeeCreate, db: Session = Depends(get_db)):
     return new_employee
 
 
+# ---------- READ ----------
 @app.get("/employees", response_model=List[EmployeeResponse])
 def get_all_employees(db: Session = Depends(get_db)):
-    # Return all rows from the employees table.
+    """Return all employees."""
+    # Fetch every row from the employees table.
     return db.query(models.Employee).all()
 
 
+# ---------- DELETE ----------
 @app.delete("/employees/{employee_id}")
 def delete_employee(employee_id: int, db: Session = Depends(get_db)):
+    """Delete one employee by id."""
     # Find the employee by primary key.
     employee = db.query(models.Employee).filter(models.Employee.id == employee_id).first()
 
